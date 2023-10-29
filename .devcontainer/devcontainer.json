@@ -1,6 +1,9 @@
 {
 	"name": "Data Dev",
 	"image": "wstrausser/data-dev:latest",
+	"runArgs": [
+		"--env-file", "${localWorkspaceFolder}/.env"
+	],
 	"postStartCommand": "yes | bash ./.devcontainer/post_start_command.sh",
 	"customizations": {
 		"vscode": {
@@ -16,8 +19,10 @@
 				"python.terminal.activateEnvironment": false,
 				"files.autoSave": "afterDelay",
 				"files.eol": "auto",
-				"editor.rulers": [88]
-            }
-        }
-    }
+				"editor.rulers": [
+					88
+				]
+			}
+		}
+	}
 }

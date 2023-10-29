@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schedule_ingestion"
+version = "0.0.0"
+authors = [
+    { name="William Strausser", email="william.e.strausser@gmail.com" },
+]
+description = "Ingestion logic for NFL schedule info"
+requires-python = ">=3.11.0"
+dependencies = [
+    'sqlalchemy >= 2.0.20',
+    'psycopg2 >= 2.9.7',
+    'nfl-data-py >= 0.3.1',
+]
+classifiers = [
+   "Programming Language :: Python :: 3",
+   "Operating System :: OS Independent",
+]

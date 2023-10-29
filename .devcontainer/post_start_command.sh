@@ -6,4 +6,5 @@ git config --global init.defaultBranch main
 git config --global core.autocrlf false
 
 sudo apt install libsnappy-dev
-pip install nfl_data_py
+pip install nfl_data_py psycopg2 sqlalchemy
+pip install -e .
