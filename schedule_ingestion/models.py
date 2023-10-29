@@ -1,4 +1,3 @@
-
 from sqlalchemy import (
     String
 )
@@ -7,6 +6,7 @@ from sqlalchemy.orm import (
     Mapped,
     mapped_column,
 )
+from typing import Optional
 
 from schedule_ingestion.global_variables import METADATA_OBJ
 
@@ -17,7 +17,7 @@ class Base(DeclarativeBase):
 
 
 # Tables
-class Account(Base):
+class Game(Base):
     __tablename__ = "games"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -26,4 +26,4 @@ class Account(Base):
     week: Mapped[int]
     home_team: Mapped[str] = mapped_column(String(3))
     away_team: Mapped[str] = mapped_column(String(3))
-    result: Mapped[str] = mapped_column(String(3))
+    result: Mapped[Optional[str]] = mapped_column(String(3))
