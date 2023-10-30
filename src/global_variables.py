@@ -1,6 +1,11 @@
+from datetime import datetime
 import os
 from sqlalchemy import create_engine
 from sqlalchemy import MetaData
+from zoneinfo import ZoneInfo
+
+TIMEZONE = ZoneInfo("Canada/Pacific")
+NOW = datetime.now(TIMEZONE)
 
 PG_LOCN = os.getenv("PG_LOCN")
 PG_DTBS = os.getenv("PG_DTBS")

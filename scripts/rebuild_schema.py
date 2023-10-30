@@ -5,8 +5,8 @@ from sqlalchemy.schema import DropSchema
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy.orm import Session
 
-from schedule_ingestion.global_variables import ENGINE, SCHEMA
-from schedule_ingestion.models import Base
+from src.global_variables import ENGINE, SCHEMA
+from src.models import Base
 
 if __name__ == "__main__":
     with Session(ENGINE) as session:
