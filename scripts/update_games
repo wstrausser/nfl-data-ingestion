@@ -6,10 +6,7 @@ from src.ingestions import update_games
 from src.utils import get_available_seasons
 
 if __name__ == "__main__":
-    if '-a' in sys.argv[1:]:
-        all_flag = True
-    else:
-        all_flag = False
+    all_flag = '-a' in sys.argv[1:]
 
     if all_flag:
         seasons = None
