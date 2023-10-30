@@ -2,5 +2,5 @@
 
 from src.ingestions import update_games
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     update_games()

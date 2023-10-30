@@ -1,10 +1,6 @@
 from datetime import datetime
-from sqlalchemy import (
-    String
-)
-from sqlalchemy.dialects.postgresql import (
-    TIMESTAMP
-)
+from sqlalchemy import String
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -39,7 +35,7 @@ class Game(Base):
         )
         exists = session.query(q.exists()).first()[0]
         return exists
-    
+
     def existing_record(self, session):
         q = session.query(Game).filter(
             Game.game_id == self.game_id,
