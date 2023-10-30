@@ -9,9 +9,9 @@ from src.global_variables import (
 from src.models import Game
 
 
-def update_games():
+def update_games(seasons=None):
     print("Retrieving raw data...")
-    data = utils.get_schedule()
+    data = utils.get_schedule(seasons)
 
     with Session(ENGINE) as session:
         print("Processing games...")

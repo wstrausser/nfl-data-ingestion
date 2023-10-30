@@ -5,6 +5,9 @@
 		"--env-file", "${localWorkspaceFolder}/.env"
 	],
 	"postStartCommand": "yes | bash ./.devcontainer/post_start_command.sh",
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:${containerWorkspaceFolder}/scripts"
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [

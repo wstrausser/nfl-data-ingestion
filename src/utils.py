@@ -4,8 +4,9 @@ import numpy as np
 from src.global_variables import NOW
 
 
-def get_schedule():
-    seasons = get_available_seasons()
+def get_schedule(seasons=None):
+    if seasons is None:
+        seasons = get_available_seasons()
     df = nfl.import_schedules(seasons)
 
     df = df[["game_id", "season", "week", "home_team", "away_team"]]
