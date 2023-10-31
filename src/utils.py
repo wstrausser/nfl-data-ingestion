@@ -47,7 +47,7 @@ def get_schedule(seasons=None):
             np.where(
                 df["total_home_score"] == df["total_away_score"],
                 "TIE",
-                np.nan,
+                None,
             ),
         ),
     )
