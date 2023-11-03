@@ -3,5 +3,6 @@
 
 *scratch*
 .docker
+.devcontainer
 
 .env

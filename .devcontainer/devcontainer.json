@@ -1,6 +1,6 @@
 {
 	"name": "Data Dev",
-	"image": "wstrausser/data-dev:latest",
+	"image": "wstrausser/dev-data:latest",
 	"runArgs": [
 		"--env-file", "${localWorkspaceFolder}/.env"
 	],
