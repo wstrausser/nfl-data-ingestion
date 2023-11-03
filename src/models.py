@@ -86,10 +86,8 @@ class Team(Base):
         stmt = select(Team).where(Team.abbreviation == self.abbreviation)
         first = session.execute(stmt).first()
         if first is not None:
-            self.existing_record = first[0]
             return True
         else:
-            self.existing_record = None
             return False
 
     def insert(self, session):
