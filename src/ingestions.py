@@ -1,3 +1,4 @@
+import nfl_data_py as nfl
 from sqlalchemy.orm import Session
 from tqdm import tqdm
 
@@ -6,7 +7,22 @@ from src.global_variables import (
     ENGINE,
     NOW,
 )
-from src.models import Game
+from src.models import (
+    Game,
+    Team,
+)
+
+
+def update_teams():
+    print("Retrieving raw teams data...")
+    teams = nfl.import_team_desc()
+    with Session(ENGINE) as session:
+        for team in tqdm(teams.to_dict('records'), "Updating teams"):
+            team_obj = Team(team)
+            if not team_obj.exists(session):
+                session.add(team_obj)
+        
+        session.commit()
 
 
 def update_games(seasons=None):
@@ -19,7 +35,7 @@ def update_games(seasons=None):
             data,
         ):
             game = Game(
-                game_id=record["game_id"],
+                api_game_id=record["game_id"],
                 season=record["season"],
                 week=record["week"],
                 home_team=record["home_team"],

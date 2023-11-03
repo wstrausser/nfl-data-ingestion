@@ -34,9 +34,9 @@ class Team(Base):
     __tablename__ = "teams"
 
     team_id: Mapped[int] = mapped_column(primary_key=True)
-    full_name: Mapped[str] = mapped_column(String(50))
-    name: Mapped[str] = mapped_column(String(50))
     abbreviation: Mapped[str] = mapped_column(String(3))
+    name: Mapped[str] = mapped_column(String(50))
+    mascot: Mapped[str] = mapped_column(String(50))
     conference: Mapped[str] = mapped_column(String(3))
     division: Mapped[str] = mapped_column(String(10))
     color_1: Mapped[str] = mapped_column(String(7))
@@ -50,9 +50,9 @@ class Team(Base):
     team_away_games: Mapped[List["Game"]] = relationship("Game", back_populates="game_away_team", foreign_keys="Game.away_team_id")
 
     def __init__(self, record):
-            self.full_name = record['team_name'],
-            self.name = record['team_nick'],
             self.abbreviation = record['team_abbr'],
+            self.name = record['team_name'],
+            self.mascot = record['team_nick'],
             self.conference = record['team_conf'],
             self.division = record['team_division'],
             self.color_1 = record['team_color'],
@@ -72,12 +72,13 @@ class Team(Base):
          return f"{obj_dict}"
 
     def exists(self, session):
-        stmt = select(Team.team_id).where(Team.abbreviation==self.abbreviation)
+        stmt = select(Team).where(Team.abbreviation==self.abbreviation)
         first = session.execute(stmt).first()
         if first is not None:
              self.existing_record = first
              return True
         else:
+             self.existing_record = None
              return False
 
 
