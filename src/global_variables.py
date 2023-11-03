@@ -11,7 +11,7 @@ PG_LOCN = os.getenv("PG_LOCN")
 PG_DTBS = os.getenv("PG_DTBS")
 PG_USER = os.getenv("PG_USER")
 PG_PASS = os.getenv("PG_PASS")
-SCHEMA = "schedule"
+SCHEMA = "nfl"
 
 DB_URL = rf"postgresql+psycopg2://{PG_USER}:{PG_PASS}@{PG_LOCN}/{PG_DTBS}"
 
