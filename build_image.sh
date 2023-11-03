@@ -1,4 +1,4 @@
-name=schedule-ingestion-prod
+name=prod-nfl-data-ingestion
 
 docker build -t wstrausser/$name:latest .
 
