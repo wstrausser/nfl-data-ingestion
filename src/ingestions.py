@@ -1,4 +1,5 @@
 import nfl_data_py as nfl
+from numpy import nan
 from sqlalchemy.orm import Session
 from tqdm import tqdm
 
@@ -15,44 +16,33 @@ from src.models import (
 
 def update_teams():
     print("Retrieving raw teams data...")
-    teams = nfl.import_team_desc()
+    teams_raw = nfl.import_team_desc()
+    teams_raw = teams_raw.replace(nan, None)
     with Session(ENGINE) as session:
-        for team in tqdm(teams.to_dict('records'), "Updating teams"):
-            team_obj = Team(team)
-            if not team_obj.exists(session):
-                session.add(team_obj)
-        
+        for team in tqdm(teams_raw.to_dict("records"), "Updating teams"):
+            team_obj = Team(team, session)
+            team_obj.insert(session)
+
         session.commit()
 
 
-def update_games(seasons=None):
-    print("Retrieving raw data...")
-    data = utils.get_schedule(seasons)
+def update_games(seasons="latest"):
+    print("Retrieving raw games data...")
+    available_seasons = utils.get_available_seasons()
+    if seasons == "all":
+        games_raw = nfl.import_schedules(available_seasons)
+    elif seasons == "latest":
+        games_raw = nfl.import_schedules(available_seasons[-1:])
+    games_raw = games_raw.replace(nan, None)
+    records = games_raw.to_dict("records")
 
-    with Session(ENGINE) as session:
-        print("Processing games...")
-        for record in tqdm(
-            data,
-        ):
-            game = Game(
-                api_game_id=record["game_id"],
-                season=record["season"],
-                week=record["week"],
-                home_team=record["home_team"],
-                away_team=record["away_team"],
-                result=record["result"],
-            )
-
-            if game.exists(session):
-                game = game.existing_record(session)
-                if game.result != record["result"]:
-                    game.result_updated = NOW
-                    game.result = record["result"]
-                    session.add(game)
+    with Session(ENGINE, autoflush=False) as session:
+        for record in tqdm(records, "Updating games"):
+            game_obj = Game(record=record, session=session)
+            if game_obj.exists:
+                existing_game_obj = Game.from_api_game_id(game_obj.api_game_id, session)
+                existing_game_obj.update(game_obj, session)
             else:
-                game.result_updated = NOW
-                session.add(game)
-            game.result = record["result"]
+                game_obj.insert(session)
 
-        print("Updating database...")
         session.commit()
