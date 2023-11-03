@@ -49,6 +49,38 @@ class Team(Base):
     team_home_games: Mapped[List["Game"]] = relationship("Game", back_populates="game_home_team", foreign_keys="Game.home_team_id")
     team_away_games: Mapped[List["Game"]] = relationship("Game", back_populates="game_away_team", foreign_keys="Game.away_team_id")
 
+    def __init__(self, record):
+            self.full_name = record['team_name'],
+            self.name = record['team_nick'],
+            self.abbreviation = record['team_abbr'],
+            self.conference = record['team_conf'],
+            self.division = record['team_division'],
+            self.color_1 = record['team_color'],
+            self.color_2 = record['team_color2'],
+            self.color_3 = record['team_color3'],
+            self.color_4 = record['team_color4'],
+            self.logo = record['team_logo_wikipedia'],
+            self.wordmark = record['team_wordmark'],
+    
+    def __repr__(self):
+         obj_dict = self.__dict__
+         obj_dict.pop("_sa_instance_state")
+
+         for key, value in obj_dict.items():
+              if isinstance(value, tuple) and len(value) == 1:
+                   obj_dict[key] = value[0]
+         return f"{obj_dict}"
+
+    def exists(self, session):
+        stmt = select(Team.team_id).where(Team.abbreviation==self.abbreviation)
+        first = session.execute(stmt).first()
+        if first is not None:
+             self.existing_record = first
+             return True
+        else:
+             return False
+
+
 
 class Game(Base):
     __tablename__ = "games"
