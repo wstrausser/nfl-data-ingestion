@@ -18,8 +18,9 @@ def update_teams():
     print("Retrieving raw teams data...")
     teams_raw = nfl.import_team_desc()
     teams_raw = teams_raw.replace(nan, None)
+    print("Updating teams table...")
     with Session(ENGINE) as session:
-        for team in tqdm(teams_raw.to_dict("records"), "Updating teams"):
+        for team in teams_raw.to_dict("records"):
             team_obj = Team(team, session)
             team_obj.insert(session)
 
@@ -36,8 +37,9 @@ def update_games(seasons="latest"):
     games_raw = games_raw.replace(nan, None)
     records = games_raw.to_dict("records")
 
+    print("Updating games table...")
     with Session(ENGINE, autoflush=False) as session:
-        for record in tqdm(records, "Updating games"):
+        for record in records:
             game_obj = Game(record=record, session=session)
             if game_obj.exists:
                 existing_game_obj = Game.from_api_game_id(game_obj.api_game_id, session)
