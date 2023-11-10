@@ -7,5 +7,4 @@ git config --global core.autocrlf false
 
 sudo apt install libsnappy-dev
 pip install nfl_data_py psycopg2 sqlalchemy
-pip install tqdm
 pip install -e .

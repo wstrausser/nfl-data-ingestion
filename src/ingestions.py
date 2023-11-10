@@ -1,7 +1,6 @@
 import nfl_data_py as nfl
 from numpy import nan
 from sqlalchemy.orm import Session
-from tqdm import tqdm
 
 from src import utils
 from src.global_variables import (
