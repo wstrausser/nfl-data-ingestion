@@ -105,6 +105,7 @@ class Game(Base):
     game_id: Mapped[int] = mapped_column(primary_key=True)
     result_updated: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
     api_game_id: Mapped[str] = mapped_column(String(20))
+    game_type: Mapped[str] = mapped_column(String(3))
     season: Mapped[int]
     week: Mapped[int]
     game_date: Mapped[date]
@@ -128,6 +129,7 @@ class Game(Base):
     def __init__(self, record, session):
         self.result_updated = NOW
         self.api_game_id = record["game_id"]
+        self.game_type = record["game_type"]
         self.season = record["season"]
         self.week = record["week"]
         self.game_date = date.fromisoformat(record["gameday"])
