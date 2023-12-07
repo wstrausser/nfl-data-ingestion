@@ -168,13 +168,18 @@ class Game(Base):
         if not self.exists:
             session.add(self)
 
-    def update(self, new, session):
-        if self.home_score != new.home_score and self.away_score != new.away_score:
-            self.result_updated = NOW
-            self.home_score = new.home_score
-            self.away_score = new.away_score
+    def update_result(self, new, session):
+        self.result_updated = NOW
+        self.home_score = new.home_score
+        self.away_score = new.away_score
 
-            session.add(self)
+        session.add(self)
+
+    def update_game_scheduling(self, new, session):
+        self.game_date = new.game_date
+        self.game_time = new.game_time
+
+        session.add(self)
 
     def from_api_game_id(api_game_id, session):
         stmt = select(Game).where(Game.api_game_id == api_game_id)

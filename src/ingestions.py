@@ -39,11 +39,22 @@ def update_games(seasons="latest"):
     print("Updating games table...")
     with Session(ENGINE, autoflush=False) as session:
         for record in records:
-            game_obj = Game(record=record, session=session)
-            if game_obj.exists:
-                existing_game_obj = Game.from_api_game_id(game_obj.api_game_id, session)
-                existing_game_obj.update(game_obj, session)
+            new_game_obj = Game(record=record, session=session)
+            if new_game_obj.exists:
+                existing_game_obj = Game.from_api_game_id(
+                    new_game_obj.api_game_id, session
+                )
+                if new_game_obj.home_score != existing_game_obj.home_score:
+                    existing_game_obj.update_result(new_game_obj, session)
+                elif (new_game_obj.game_date != existing_game_obj.game_date) or (
+                    new_game_obj.game_time != existing_game_obj.game_time
+                ):
+                    existing_game_obj.update_game_scheduling(new_game_obj, session)
+                else:
+                    raise ValueError(
+                        f"Unaccounted for change in nfl.games row\n\nCURRENT:\n{existing_game_obj}\n\nNEW:\n{new_game_obj}"
+                    )
             else:
-                game_obj.insert(session)
+                new_game_obj.insert(session)
 
         session.commit()
