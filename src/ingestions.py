@@ -50,7 +50,7 @@ def update_games(seasons="latest"):
                     new_game_obj.game_time != existing_game_obj.game_time
                 ):
                     existing_game_obj.update_game_scheduling(new_game_obj, session)
-                else:
+                elif new_game_obj != existing_game_obj:
                     raise ValueError(
                         f"Unaccounted for change in nfl.games row\n\nCURRENT:\n{existing_game_obj}\n\nNEW:\n{new_game_obj}"
                     )
